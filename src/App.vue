@@ -1,21 +1,30 @@
 <script setup>
-// import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { useRouter } from 'vue-router';
+
+// Importing TheWelcome component
+import TheWelcome from './components/TheWelcome.vue';
+
+const router = useRouter();
+const isAuthenticated = localStorage.getItem("token");
+
+// Check if the user is authenticated
+if (isAuthenticated) {
+  // If authenticated, redirect to /WelcomeItem
+  router.push("/WelcomeItem");
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <!-- <HelloWorld msg="You did it!" /> -->
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div id="app">
+   
+    <router-view v-if="!isAuthenticated"></router-view>
+   
+    <main v-else>
+      <TheWelcome />
+    </main>
+  </div>
 </template>
+
 
 <style scoped>
 header {

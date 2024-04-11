@@ -1,77 +1,132 @@
 <template>
- <h1>welcome to the project</h1>
+  <div class="form-container">
+    <form @submit.prevent="submitForm">
+      <div>
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" v-model="form.firstname" required>
+      </div>
+      <div>
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" v-model="form.lastname" required>
+      </div>
+      <div>
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" v-model="form.date_of_birth" required>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" v-model="form.email" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" v-model="form.password" required>
+      </div>
+      <div>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" v-model="form.phone" required>
+      </div>
+    
+      <div>
+        <label for="educational_qualification">Educational Qualification:</label>
+        <input type="text" id="educational_qualification" v-model="form.educational_qualification">
+      </div>
+      <div>
+        <label for="photo">Photo:</label>
+        <input type="file" id="photo" accept="image/*" @change="handlePhotoUpload">
+      </div>
+      <div>
+        <label for="resume">Resume:</label>
+        <input type="file" id="resume" accept=".pdf,.doc,.docx" @change="handleResumeUpload">
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 </template>
 
-<style scoped>
-.item {
-  margin-top: 2rem;
-  display: flex;
-  position: relative;
+<script>
+import axios from 'axios';
+export default {
+  data() {
+    return {
+      form: {
+        firstname: '',
+        lastname: '',
+        date_of_birth: '',
+        email: '',
+        password: '',
+        phone: '',
+      
+        educational_qualification: '',
+        photo: null,
+        resume: null
+      }
+    };
+  },
+  methods: {
+    submitForm() {
+   
+      axios.post('http://127.0.0.1:8000/api/register', this.form)
+        .then(response => {
+       
+          console.log(response.data);
+          
+        })
+        .catch(error => {
+         
+          console.error(error);
+    
+        });
+    },
+    handlePhotoUpload(event) {
+      this.form.photo = event.target.files[0];
+    },
+    handleResumeUpload(event) {
+      this.form.resume = event.target.files[0];
+    }
+  }
+};
+</script>
+
+<style>
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
-.details {
-  flex: 1;
-  margin-left: 1rem;
+.form-container label {
+  display: block;
+  margin-bottom: 5px;
 }
 
-i {
-  display: flex;
-  place-items: center;
-  place-content: center;
-  width: 32px;
-  height: 32px;
-
-  color: var(--color-text);
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="password"],
+.form-container input[type="tel"],
+.form-container input[type="date"],
+.form-container input[type="file"] {
+  width: calc(100% - 12px);
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  color: var(--color-heading);
+.form-container button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
 }
 
-@media (min-width: 1024px) {
-  .item {
-    margin-top: 0;
-    padding: 0.4rem 0 1rem calc(var(--section-gap) / 2);
-  }
-
-  i {
-    top: calc(50% - 25px);
-    left: -26px;
-    position: absolute;
-    border: 1px solid var(--color-border);
-    background: var(--color-background);
-    border-radius: 8px;
-    width: 50px;
-    height: 50px;
-  }
-
-  .item:before {
-    content: ' ';
-    border-left: 1px solid var(--color-border);
-    position: absolute;
-    left: 0;
-    bottom: calc(50% + 25px);
-    height: calc(50% - 25px);
-  }
-
-  .item:after {
-    content: ' ';
-    border-left: 1px solid var(--color-border);
-    position: absolute;
-    left: 0;
-    top: calc(50% + 25px);
-    height: calc(50% - 25px);
-  }
-
-  .item:first-of-type:before {
-    display: none;
-  }
-
-  .item:last-of-type:after {
-    display: none;
-  }
+.form-container button:hover {
+  background-color: #0056b3;
 }
 </style>

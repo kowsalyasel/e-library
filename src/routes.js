@@ -1,26 +1,22 @@
 
+import { createRouter, createWebHistory } from "vue-router";
 
-import Vue from 'vue';
+import WelcomeItem from "./components/WelcomeItem.vue";
 
-import VueRouter from 'vue-router';
-import WelcomeItem from './components/WelcomeItem.vue';
 
-Vue.use(VueRouter);
 
 const routes = [
-
   {
-    path: '/WelcomeItem',
-    name: 'WelcomeItem',
-    component: WelcomeItem
-  }
-
+    path: "/WelcomeItem",
+    name: "WelcomeItem",
+    component: ()=>import("./components/WelcomeItem.vue"),
+  },
 ];
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;
